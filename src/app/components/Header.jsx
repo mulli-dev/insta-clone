@@ -1,8 +1,15 @@
+"use client";
+
 import Link from "next/link";
 import React from "react";
 import Image from "next/image";
+import { signIn, useSession, signOut } from "next-auth/react";
+import { IoMdAddCircleOutline } from "react-icons/io";
 
 export default function Header() {
+  const { data: session } = useSession();
+  console.log(session);
+
   return (
     <div className="sticky top-0 z-30 p-3 bg-white border-b shadow-sm">
       <div className="flex items-center justify-between max-w-6xl mx-auto ">
@@ -35,7 +42,27 @@ export default function Header() {
 
         {/*---menu items  ----*/}
 
-        <button className="text-sm font-semibold text-blue-500">Login</button>
+        {session ? (
+          <div className="flex items-center gap-2">
+            <IoMdAddCircleOutline
+              className="text-2xl transition duration-300 cursor-pointer tranform hover:scale-125 hover:text-red-600"
+              onClick={() => setIsOpen(true)}
+            />
+            <img
+              src={session.user.image}
+              alt={session.user.name}
+              className="w-10 h-10 rounded-full cursor-pointer"
+              onClick={signOut}
+            />
+          </div>
+        ) : (
+          <button
+            onClick={signIn}
+            className="text-sm font-semibold text-blue-500"
+          >
+            Log In
+          </button>
+        )}
       </div>
     </div>
   );
