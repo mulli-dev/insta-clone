@@ -1,5 +1,5 @@
 import { HiOutlineDotsVertical } from "react-icons/hi";
-//import LikeSection from './LikeSection';
+import LikeSection from "./LikeSection";
 //import CommentSection from './CommentSection';
 
 export default function Post({ post }) {
@@ -19,7 +19,7 @@ export default function Post({ post }) {
         alt={post.caption}
         className="object-cover w-full"
       />
-
+      <LikeSection id={post.id} />
       <p className="p-5 truncate">
         <span className="mr-2 font-bold">{post.username}</span>
         {post.caption}
