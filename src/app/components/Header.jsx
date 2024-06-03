@@ -33,6 +33,8 @@ export default function Header() {
   const filePickerRef = useRef(null);
   const [imageFileUploading, setImageFileUploading] = useState(false);
   const db = getFirestore(app);
+  const [postUploading, setPostUploading] = useState(false);
+  const [caption, setCaption] = useState("");
 
   console.log(session);
 
@@ -76,6 +78,21 @@ export default function Header() {
         });
       }
     );
+  }
+
+  async function handleSubmit() {
+    setPostUploading(true);
+    const docRef = await addDoc(collection(db, "posts"), {
+      username: session.user.username,
+      caption,
+      profileImg: session.user.image,
+      image: imageFileUrl,
+      timestamp: serverTimestamp(),
+    });
+
+    setPostUploading(false);
+    setIsOpen(false);
+    location.reload();
   }
 
   return (
@@ -171,7 +188,16 @@ export default function Header() {
             className="w-full m-4 text-center border-none outline-none focus:ring-0"
             onChange={(e) => setCaption(e.target.value)}
           />
-          <button className="w-full p-2 text-white bg-red-600 rounded-lg shadow-md hover:brightness-105 disabled:bg-gray-200 disabled:cursor-not-allowed disabled:hover:brightness-100">
+          <button
+            onClick={handleSubmit}
+            disabled={
+              !selectedFile ||
+              caption.trim() === "" ||
+              postUploading ||
+              imageFileUploading
+            }
+            className="w-full p-2 text-white bg-red-600 rounded-lg shadow-md hover:brightness-105 disabled:bg-gray-200 disabled:cursor-not-allowed disabled:hover:brightness-100"
+          >
             Upload Post
           </button>
           <AiOutlineClose
