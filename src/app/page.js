@@ -1,5 +1,11 @@
-import React from "react";
+import Feed from "./components/Feed";
 
-export default function page() {
-  return <h1 className="text-red-700">Home</h1>;
+export const dynamic = "force-dynamic";
+
+export default function Home() {
+  return (
+    <>
+      <Feed />
+    </>
+  );
 }
